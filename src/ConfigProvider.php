@@ -30,8 +30,8 @@ class ConfigProvider
             ],
             'publish'      => [
                 [
-                    'id'          => 'filter',
-                    'description' => 'hyperf-filter',
+                    'id'          => 'eloquentfilter',
+                    'description' => 'hyperf-filter config file',
                     'source'      => __DIR__ . '/../publish/eloquentfilter.php',
                     'destination' => BASE_PATH . '/config/autoload/eloquentfilter.php',
                 ],
