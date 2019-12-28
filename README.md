@@ -6,7 +6,7 @@ composer create-project jie-anthony/hyperf-filter -vvv
 ```
 ### 发布配置
 ```
-php bin/hyperf.php hyperf-filter:publish
+php bin/hyperf.php vendor:publish jie-anthony/hyperf-filter
 ```
 
 ### testing！！！
