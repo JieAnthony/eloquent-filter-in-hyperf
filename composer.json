@@ -1,5 +1,5 @@
 {
-    "name": "anthony/hyperf-filter",
+    "name": "jie-anthony/hyperf-filter",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -9,7 +9,7 @@
     "description": "An Eloquent way to filter Eloquent Models",
     "autoload": {
         "psr-4": {
-            "Anthony\\EloquentFilter\\": "src/"
+            "JieAnthony\\EloquentFilter\\": "src/"
         }
     },
     "autoload-dev": {
@@ -39,7 +39,7 @@
     },
     "extra": {
         "hyperf": {
-            "config": "Anthony\\EloquentFilter\\ConfigProvider"
+            "config": "JieAnthony\\EloquentFilter\\ConfigProvider"
         }
     }
 }

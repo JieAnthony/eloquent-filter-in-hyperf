@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Anthony\EloquentFilter;
+namespace JieAnthony\EloquentFilter;
 
 use Hyperf\Database\Model\Relations\Relation;
 use Hyperf\Database\Model\Builder as QueryBuilder;

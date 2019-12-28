@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Anthony\EloquentFilter;
+namespace JieAnthony\EloquentFilter;
 
 trait Filterable
 {
