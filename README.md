@@ -2,7 +2,7 @@
 
 ### 安装
 ```
-composer create-project jie-anthony/hyperf-filter -vvv
+composer require jie-anthony/hyperf-filter -vvv
 ```
 ### 发布配置
 ```
