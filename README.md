@@ -1,4 +1,4 @@
-# anthony/hyperf-filter
+# jie-anthony/hyperf-filter
 
 ### 安装
 ```
@@ -100,5 +100,9 @@ class IndexController extends AbstractController
 
 ```
 
-## TODO
-- 命令行新建Filter文件
+## 命令行创建文件
+
+```
+php bin/hyperf.php model:filter UserFilter
+```
+
