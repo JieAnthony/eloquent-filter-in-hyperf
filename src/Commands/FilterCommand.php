@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FilterCommand extends GeneratorCommand
 {
 
-    protected $name = 'model:filter';
+    protected $name = 'gen:eloquent-filter';
 
     public function __construct()
     {

@@ -2,11 +2,11 @@
 
 ### 安装
 ```
-composer require jie-anthony/hyperf-filter -vvv
+composer require jie-anthony/eloquent-filter-in-hyperf -vvv
 ```
 ### 发布配置
 ```
-php bin/hyperf.php vendor:publish jie-anthony/hyperf-filter
+php bin/hyperf.php vendor:publish jie-anthony/eloquent-filter-in-hyperf
 ```
 ## 新建文件夹 app/ModelFilters
 
@@ -103,6 +103,6 @@ class IndexController extends AbstractController
 ## 命令行创建文件
 
 ```
-php bin/hyperf.php model:filter UserFilter
+php bin/hyperf.php gen:eloquent-filter UserFilter
 ```
 
