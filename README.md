@@ -1,4 +1,4 @@
-# jie-anthony/hyperf-filter
+# jie-anthony/eloquent-filter-in-hyperf
 
 ### 安装
 ```

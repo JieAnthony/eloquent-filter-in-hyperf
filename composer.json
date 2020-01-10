@@ -4,7 +4,10 @@
     "license": "MIT",
     "keywords": [
         "php",
-        "hyperf"
+        "hyperf",
+        "Eloquent",
+        "Models",
+        "Model Filter"
     ],
     "description": "An Eloquent way to filter Eloquent Models",
     "autoload": {
