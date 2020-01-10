@@ -8,13 +8,19 @@ composer require jie-anthony/eloquent-filter-in-hyperf -vvv
 ```
 php bin/hyperf.php vendor:publish jie-anthony/eloquent-filter-in-hyperf
 ```
-## 新建文件夹 app/ModelFilters
+
+## 命令行创建文件
+
+```
+php bin/hyperf.php gen:eloquent-filter UserFilter
+```
 
 
 ## Filter文件
 ```
 <?php
 
+declare (strict_types=1);
 namespace App\ModelFilters;
 
 use JieAnthony\EloquentFilter\ModelFilter;
@@ -33,7 +39,7 @@ class UserFilter extends ModelFilter
 }
 ```
 
-## 模型中的使用
+## 模型
 ```
 <?php
 
@@ -42,8 +48,7 @@ namespace App\Model;
 
 use Hyperf\DbConnection\Model\Model;
 use JieAnthony\EloquentFilter\Filterable;
-/**
- */
+
 class User extends Model
 {
     use Filterable;
@@ -99,10 +104,3 @@ class IndexController extends AbstractController
 }
 
 ```
-
-## 命令行创建文件
-
-```
-php bin/hyperf.php gen:eloquent-filter UserFilter
-```
-
