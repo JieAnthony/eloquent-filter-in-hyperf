@@ -1,5 +1,14 @@
 <?php
+
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://doc.hyperf.io
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace JieAnthony\EloquentFilter\Commands;
 
@@ -14,7 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FilterCommand extends GeneratorCommand
 {
-
     protected $name = 'gen:eloquent-filter';
 
     public function __construct()
@@ -25,11 +33,11 @@ class FilterCommand extends GeneratorCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->input  = $input;
+        $this->input = $input;
         $this->output = $output;
 
         $inputs = $this->getNameInput();
-        $name   = $this->qualifyClass($inputs['name']);
+        $name = $this->qualifyClass($inputs['name']);
 
         $path = $this->getPath($name);
 
@@ -42,24 +50,17 @@ class FilterCommand extends GeneratorCommand
         $output->writeln(sprintf('<info>%s</info>', $name . ' created successfully.'));
     }
 
-
     protected function buildModelFilterClass($name)
     {
         $stub = file_get_contents($this->getStub());
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
-    /**
-     * @return string
-     */
     protected function getStub(): string
     {
         return __DIR__ . '/stubs/modelfilter.stub';
     }
 
-    /**
-     * @return string
-     */
     protected function getDefaultNamespace(): string
     {
         return $this->getConfig()['namespace'] ?? 'App\\ModelFilters';
@@ -88,5 +89,4 @@ class FilterCommand extends GeneratorCommand
             ['name', InputArgument::REQUIRED, 'The name of the model filter class'],
         ];
     }
-
 }

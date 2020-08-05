@@ -19,20 +19,20 @@ class ConfigProvider
         return [
             'dependencies' => [
             ],
-            'commands'     => [
+            'commands' => [
             ],
-            'annotations'  => [
+            'annotations' => [
                 'scan' => [
                     'paths' => [
                         __DIR__,
                     ],
                 ],
             ],
-            'publish'      => [
+            'publish' => [
                 [
-                    'id'          => 'eloquentfilter',
+                    'id' => 'eloquentfilter',
                     'description' => 'hyperf eloquent filter config file',
-                    'source'      => __DIR__ . '/../publish/eloquentfilter.php',
+                    'source' => __DIR__ . '/../publish/eloquentfilter.php',
                     'destination' => BASE_PATH . '/config/autoload/eloquentfilter.php',
                 ],
             ],

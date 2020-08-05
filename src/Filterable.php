@@ -1,5 +1,14 @@
 <?php
+
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://doc.hyperf.io
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace JieAnthony\EloquentFilter;
 
@@ -16,8 +25,7 @@ trait Filterable
      * Creates local scope to run the filter.
      *
      * @param $query
-     * @param array $input
-     * @param null|string|ModelFilter $filter
+     * @param null|ModelFilter|string $filter
      * @return \Hyperf\Database\Model\Builder
      */
     public function scopeFilter($query, array $input = [], $filter = null)
@@ -43,13 +51,14 @@ trait Filterable
      * @param int $perPage
      * @param array $columns
      * @param string $pageName
-     * @param int|null $page
-     *
+     * @param null|int $page
+     * @param mixed $query
      * @throws \InvalidArgumentException
+     * @return \Hyperf\Contract\LengthAwarePaginatorInterface
      */
     public function scopePaginateFilter($query, $perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
-        $perPage   = $perPage ?: config('eloquentfilter.paginate_limit');
+        $perPage = $perPage ?: config('eloquentfilter.paginate_limit');
         $paginator = $query->paginate($perPage, $columns, $pageName, $page);
         $paginator->appends($this->filtered);
 
@@ -62,13 +71,14 @@ trait Filterable
      * @param int $perPage
      * @param array $columns
      * @param string $pageName
-     * @param int|null $page
-     *
+     * @param null|int $page
+     * @param mixed $query
      * @throws \InvalidArgumentException
+     * @return \Hyperf\Contract\LengthAwarePaginatorInterface
      */
     public function scopeSimplePaginateFilter($query, $perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
-        $perPage   = $perPage ?: config('eloquentfilter.paginate_limit');
+        $perPage = $perPage ?: config('eloquentfilter.paginate_limit');
         $paginator = $query->simplePaginate($perPage, $columns, $pageName, $page);
         $paginator->appends($this->filtered);
 
@@ -111,7 +121,7 @@ trait Filterable
      */
     public function scopeWhereLike($query, $column, $value, $boolean = 'and')
     {
-        return $query->where($column, 'LIKE', "%$value%", $boolean);
+        return $query->where($column, 'LIKE', "%{$value}%", $boolean);
     }
 
     /**
@@ -125,7 +135,7 @@ trait Filterable
      */
     public function scopeWhereBeginsWith($query, $column, $value, $boolean = 'and')
     {
-        return $query->where($column, 'LIKE', "$value%", $boolean);
+        return $query->where($column, 'LIKE', "{$value}%", $boolean);
     }
 
     /**
@@ -139,6 +149,6 @@ trait Filterable
      */
     public function scopeWhereEndsWith($query, $column, $value, $boolean = 'and')
     {
-        return $query->where($column, 'LIKE', "%$value", $boolean);
+        return $query->where($column, 'LIKE', "%{$value}", $boolean);
     }
 }

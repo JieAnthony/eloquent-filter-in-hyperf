@@ -1,11 +1,21 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://doc.hyperf.io
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace JieAnthony\EloquentFilter;
 
-use Hyperf\Database\Model\Relations\Relation;
 use Hyperf\Database\Model\Builder as QueryBuilder;
+use Hyperf\Database\Model\Relations\Relation;
+use Hyperf\Utils\Arr;
+use Hyperf\Utils\Str;
 
 /**
  * @mixin QueryBuilder
@@ -86,13 +96,12 @@ abstract class ModelFilter
      * ModelFilter constructor.
      *
      * @param $query
-     * @param array $input
      * @param bool $relationsEnabled
      */
     public function __construct($query, array $input = [], $relationsEnabled = true)
     {
-        $this->query            = $query;
-        $this->input            = $this->removeEmptyInput($input);
+        $this->query = $query;
+        $this->input = $this->removeEmptyInput($input);
         $this->relationsEnabled = $relationsEnabled;
         $this->registerMacros();
     }
@@ -154,7 +163,6 @@ abstract class ModelFilter
      * Locally defines a relation filter method that will be called in the context of the related model.
      *
      * @param $relation
-     * @param \Closure $closure
      * @return $this
      */
     public function addRelated($relation, \Closure $closure)
@@ -182,7 +190,7 @@ abstract class ModelFilter
 
         // If there is no value it is a where = ? query and we set the appropriate params
         if ($value === null) {
-            $value    = $operator;
+            $value = $operator;
             $operator = '=';
         }
 
@@ -201,24 +209,7 @@ abstract class ModelFilter
         $methodName = str_replace('.', '', $this->drop_id ? preg_replace('/^(.*)_id$/', '$1', $key) : $key);
 
         // Convert key to camelCase?
-        return $this->camel_cased_methods ? $this->convertToCamelCase($methodName) : $methodName;
-    }
-
-    /**
-     * Convert a string to camel case.
-     *
-     * @param $value
-     * @return string
-     */
-    protected function convertToCamelCase($value)
-    {
-        if (function_exists('camel_case')) {
-            return camel_case($value);
-        }
-
-        $value = ucwords(str_replace(['-', '_'], ' ', $value));
-
-        return lcfirst(str_replace(' ', '', $value));
+        return $this->camel_cased_methods ? Str::camel($methodName) : $methodName;
     }
 
     /**
@@ -288,9 +279,15 @@ abstract class ModelFilter
         return array_key_exists($relation, $this->allRelations) ? $this->allRelations[$relation] : [];
     }
 
+    /**
+     * Call setup method for relation before filtering on it.
+     *
+     * @param $related
+     * @param $query
+     */
     public function callRelatedLocalSetup($related, $query)
     {
-        if (method_exists($this, $method = camel_case($related) . 'Setup')) {
+        if (method_exists($this, $method = Str::camel($related) . 'Setup')) {
             $this->{$method}($query);
         }
     }
@@ -358,10 +355,14 @@ abstract class ModelFilter
      * Get an empty instance of a related model.
      *
      * @param $relation
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Hyperf\Database\Model\Model
      */
     public function getRelatedModel($relation)
     {
+        if (strpos($relation, '.') !== false) {
+            return $this->getNestedRelatedModel($relation);
+        }
+
         return $this->query->getModel()->{$relation}()->getRelated();
     }
 
@@ -419,7 +420,19 @@ abstract class ModelFilter
      */
     public function getRelatedFilterInput($related)
     {
-        return array_key_exists($related, $this->relations) ? array_only($this->input, $this->relations[$related]) : [];
+        $output = [];
+
+        if (array_key_exists($related, $this->relations)) {
+            foreach ((array) $this->relations[$related] as $alias => $name) {
+                // If the alias is a string that is what we grab from the input
+                // Then use the name for the output so we can alias relations
+                if ($value = Arr::get($this->input, is_string($alias) ? $alias : $name)) {
+                    $output[$name] = $value;
+                }
+            }
+        }
+
+        return $output;
     }
 
     /**
@@ -469,7 +482,7 @@ abstract class ModelFilter
      *
      * @param null $key
      * @param null $default
-     * @return array|mixed|null
+     * @return null|array|mixed
      */
     public function input($key = null, $default = null)
     {
@@ -604,9 +617,26 @@ abstract class ModelFilter
      */
     public function methodIsCallable($method)
     {
-        return !$this->methodIsBlacklisted($method) &&
+        return ! $this->methodIsBlacklisted($method) &&
             method_exists($this, $method) &&
-            !method_exists(ModelFilter::class, $method);
+            ! method_exists(ModelFilter::class, $method);
+    }
+
+    /**
+     * @param $relationString
+     * @return \Hyperf\Database\Model\Model|QueryBuilder
+     */
+    protected function getNestedRelatedModel($relationString)
+    {
+        $parts = explode('.', $relationString);
+        $related = $this->query->getModel();
+
+        do {
+            $relation = array_shift($parts);
+            $related = $related->{$relation}()->getRelated();
+        } while (! empty($parts));
+
+        return $related;
     }
 
     /**
@@ -618,8 +648,8 @@ abstract class ModelFilter
         if (
             method_exists(Relation::class, 'hasMacro') &&
             method_exists(Relation::class, 'macro') &&
-            !Relation::hasMacro('paginateFilter') &&
-            !Relation::hasMacro('simplePaginateFilter')
+            ! Relation::hasMacro('paginateFilter') &&
+            ! Relation::hasMacro('simplePaginateFilter')
         ) {
             Relation::macro('paginateFilter', function () {
                 $paginator = call_user_func_array([$this, 'paginate'], func_get_args());
@@ -636,4 +666,3 @@ abstract class ModelFilter
         }
     }
 }
-
