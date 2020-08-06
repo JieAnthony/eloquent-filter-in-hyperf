@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 return [
     'namespace' => 'App\\ModelFilters\\',
     'paginate_limit' => env('PAGINATION_LIMIT_DEFAULT', 15),

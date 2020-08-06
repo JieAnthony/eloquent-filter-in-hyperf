@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace JieAnthony\EloquentFilter;
 
 use Hyperf\Database\Model\Builder as QueryBuilder;

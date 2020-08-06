@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace JieAnthony\EloquentFilter\Commands;
 
 use Hyperf\Command\Annotation\Command;
@@ -69,7 +68,7 @@ class FilterCommand extends GeneratorCommand
     /**
      * Get the desired class name from the input.
      *
-     * @return string
+     * @return array
      */
     protected function getNameInput()
     {

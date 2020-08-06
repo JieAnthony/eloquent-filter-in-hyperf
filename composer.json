@@ -23,14 +23,16 @@
     "require": {
         "php": ">=7.2",
         "ext-swoole": ">=4.5",
+        "hyperf/command": "~2.0.0",
+        "hyperf/devtool": "~2.0.0",
         "hyperf/framework": "~2.0.0",
         "hyperf/database": "~2.0.0",
         "hyperf/utils": "~2.0.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
-        "phpstan/phpstan": "^0.10.5",
-        "hyperf/testing": "1.1.*",
+        "phpstan/phpstan": "^0.12.36",
+        "hyperf/testing": "~2.0.0",
         "swoft/swoole-ide-helper": "dev-master"
     },
     "config": {
