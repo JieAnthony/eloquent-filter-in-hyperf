@@ -1,4 +1,6 @@
-# jie-anthony/eloquent-filter-in-hyperf 基于tucker-eric/eloquentfilter 调整为适配Hyperf的模型查询过滤器
+# jie-anthony/eloquent-filter-in-hyperf
+
+基于tucker-eric/eloquentfilter 调整为适配Hyperf的模型查询过滤器
 
 ### 安装
 ```

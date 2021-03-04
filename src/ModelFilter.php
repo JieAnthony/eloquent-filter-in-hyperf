@@ -95,6 +95,7 @@ abstract class ModelFilter
      * ModelFilter constructor.
      *
      * @param $query
+     * @param array $input
      * @param bool $relationsEnabled
      */
     public function __construct($query, array $input = [], $relationsEnabled = true)
@@ -162,6 +163,7 @@ abstract class ModelFilter
      * Locally defines a relation filter method that will be called in the context of the related model.
      *
      * @param $relation
+     * @param \Closure $closure
      * @return $this
      */
     public function addRelated($relation, \Closure $closure)
@@ -286,7 +288,7 @@ abstract class ModelFilter
      */
     public function callRelatedLocalSetup($related, $query)
     {
-        if (method_exists($this, $method = Str::camel($related) . 'Setup')) {
+        if (method_exists($this, $method = Str::camel($related).'Setup')) {
             $this->{$method}($query);
         }
     }
@@ -363,6 +365,23 @@ abstract class ModelFilter
         }
 
         return $this->query->getModel()->{$relation}()->getRelated();
+    }
+
+    /**
+     * @param $relationString
+     * @return QueryBuilder|\Hyperf\Database\Model\Model
+     */
+    protected function getNestedRelatedModel($relationString)
+    {
+        $parts = explode('.', $relationString);
+        $related = $this->query->getModel();
+
+        do {
+            $relation = array_shift($parts);
+            $related = $related->{$relation}()->getRelated();
+        } while (! empty($parts));
+
+        return $related;
     }
 
     /**
@@ -481,7 +500,7 @@ abstract class ModelFilter
      *
      * @param null $key
      * @param null $default
-     * @return null|array|mixed
+     * @return array|mixed|null
      */
     public function input($key = null, $default = null)
     {
@@ -619,23 +638,6 @@ abstract class ModelFilter
         return ! $this->methodIsBlacklisted($method) &&
             method_exists($this, $method) &&
             ! method_exists(ModelFilter::class, $method);
-    }
-
-    /**
-     * @param $relationString
-     * @return \Hyperf\Database\Model\Model|QueryBuilder
-     */
-    protected function getNestedRelatedModel($relationString)
-    {
-        $parts = explode('.', $relationString);
-        $related = $this->query->getModel();
-
-        do {
-            $relation = array_shift($parts);
-            $related = $related->{$relation}()->getRelated();
-        } while (! empty($parts));
-
-        return $related;
     }
 
     /**
